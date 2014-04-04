@@ -1,9 +1,9 @@
 {
-	"name": "s3",
-	"description": "A simple helper for easily uploading files to Amazon S3 from Meteor. This package will also make Knox available server-side.",
-	"homepage": "https://github.com/Lepozepo/S3",
-	"author": "Lepozepo <lepozepo@gmail.com>",
-	"version": "2.0.0",
+	"name": "jdj:s3",
+	"description": "A fork of https://github.com/Lepozepo/S3.git",
+	"homepage": "https://github.com/jakobdamjensen/S3",
+	"author": "Jakob Dam Jensen <jakob@npapps.com>",
+	"version": "1.0.0",
 	"git": "https://github.com/Lepozepo/S3.git",
 	"packages": {}
 }

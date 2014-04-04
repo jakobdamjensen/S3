@@ -1,13 +1,24 @@
 Template.S3.events({
 	'change input[type=file]': function (e,helper) {
-		var context = this;
+		var context = null, //this;
+        callback = null,
+        sessionKey = null;
 
 		if(helper.data && _.has(helper.data,"callback")){
-			var callback = helper.data.callback;
+			callback = helper.data.callback;
 		} else {
 			console.log("S3 Error: Helper Block needs a callback function to run");
 			return
 		}
+
+    if(helper.data && helper.data.sessionKey){
+      sessionKey = helper.data.sessionKey;
+    }
+
+    
+    if( sessionKey ){
+      Session.set(sessionKey + ":upload-progress", "started");
+    }
 
 		var files = e.currentTarget.files;
 		_.each(files,function(file){
@@ -20,7 +31,15 @@ Template.S3.events({
 
 			reader.onload = function () {
 				fileData.data = new Uint8Array(reader.result);
-				Meteor.call("S3upload",fileData,context,callback);
+
+        Session.set(sessionKey + ":upload-progress", "uploading");
+
+				Meteor.call("S3upload",fileData,context,callback, function(err, url){
+          if( sessionKey ){
+            Session.set(sessionKey + ":upload-progress", "done");
+            Session.set(sessionKey + ":url", url);
+          }
+        });
 			};
 
 			reader.readAsArrayBuffer(file);
